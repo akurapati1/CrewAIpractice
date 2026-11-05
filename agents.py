@@ -1,30 +1,29 @@
 from crewai import Agent
+
 from tools import yt_tool
 
 blog_researcher = Agent(
-    role = 'Blog Researcher from Youtube videos',
-    goal = 'get the relevent video content for the topic{topic} from youtube channel',
-    verbose = True,
-    memory = True,
-    backstory= (
-        "Expert in understanding videos in AI Data Science, Machine Learning and Gen AI and providing suggestions"
-        ),
-    tools = [],
-    allow_deligation = True
+    role="Blog Researcher from YouTube videos",
+    goal="Get the relevant video content for the topic {topic} from the YouTube channel",
+    backstory=(
+        "Expert in understanding videos in AI, Data Science, Machine Learning and Gen AI, "
+        "and in providing well-grounded suggestions."
+    ),
+    tools=[yt_tool],
+    verbose=True,
+    memory=True,
+    allow_delegation=True,
 )
 
-
 blog_writer = Agent(
-        role = 'Blog Writer',
-        goal = 'Narrate Compelling teh stories about the video{topic} from youtube channel',
-        verbose = True,
-        memory = True,
-        backstory= (
-            "With a flair for simplifying complex topics, you craft"
-            "engaging narratives that captivate and aducate, bringing new"
-            "discoverables to light in as accessible manner"
-        ),
-        tools = [yt_tool],
-        allow_deligation = False
-
+    role="Blog Writer",
+    goal="Narrate compelling stories about the video {topic} from the YouTube channel",
+    backstory=(
+        "With a flair for simplifying complex topics, you craft engaging narratives that "
+        "captivate and educate, bringing new discoveries to light in an accessible manner."
+    ),
+    tools=[yt_tool],
+    verbose=True,
+    memory=True,
+    allow_delegation=False,
 )
