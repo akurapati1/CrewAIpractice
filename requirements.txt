@@ -1,2 +1,4 @@
 crewai
-crewai_tools
+crewai-tools
+pytube
+python-dotenv

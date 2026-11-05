@@ -1,16 +1,36 @@
-# CrewAI Practice  
+# CrewAIpractice
 
-This repository is my practice space for working with **CrewAI**, an open-source framework designed for orchestrating role-playing AI agents that collaborate on complex tasks. CrewAI enables multiple AI agents to work together efficiently, making it useful for automating workflows and problem-solving.  
+A multi-agent workflow built with [CrewAI](https://www.crewai.com): a **researcher** agent mines a YouTube channel for a topic, then a **writer** agent turns the findings into a Markdown blog post (`new-blogpost.md`).
 
-## What I Practiced in This Repo  
+## Architecture
+```
+topic ─▶ Researcher (YoutubeChannelSearchTool) ─▶ research_task ─▶ Writer ─▶ write_task ─▶ new-blogpost.md
+```
+| File | Role |
+|---|---|
+| `tools.py` | YouTube channel RAG search tool (channel configurable via env) |
+| `agents.py` | Researcher and Writer agents (roles, goals, backstories) |
+| `tasks.py` | Task definitions; the writer receives the researcher's output as context |
+| `crew.py` | Assembles a sequential crew and runs it from the CLI |
 
-In this repository, I explored how to set up and manage AI agents using CrewAI. My practice involved:  
+## Setup
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env     # add OPENAI_API_KEY
+```
 
-- **Defining AI agents** in `agents.py`, assigning them roles and objectives.  
-- **Setting up the crew** in `crew.py`, organizing how these agents interact and collaborate.  
-- **Creating tasks** in `tasks.py`, defining what each agent needs to accomplish.  
-- **Using tools** in `tools.py`, providing additional functionality to enhance agent capabilities.  
+## Run
+```bash
+python crew.py                                  # default topic
+python crew.py "Retrieval-augmented generation" # custom topic
+```
+The result is printed and saved to `new-blogpost.md`.
 
-By working through these files, I got hands-on experience with CrewAI’s workflow, learning how to build autonomous agent teams that can execute tasks efficiently.  
+## Requirements & notes
+- Python 3.10–3.13, an `OPENAI_API_KEY`, and **internet access** (the YouTube channel is fetched and indexed when `tools.py` is imported, so the first start takes a moment).
+- Video listing uses `pytube`; if YouTube changes its pages it can temporarily break — upgrade it (`pip install -U pytube`) or switch `YOUTUBE_CHANNEL_HANDLE` to another channel.
+- `tools.py` registers the full channel URL itself because current `crewai-tools` releases reject a bare `@handle`.
 
-If you're interested in CrewAI, check out [CrewAI's website](https://www.crewai.com) or watch this [step-by-step video on building CrewAI agents](https://www.youtube.com/watch?v=twzgEBabOBk).  
+## Learning goals
+Agent roles/backstories, task context passing, tools, sequential process, memory and caching.
