@@ -27,5 +27,10 @@ python crew.py "Retrieval-augmented generation" # custom topic
 ```
 The result is printed and saved to `new-blogpost.md`.
 
+## Requirements & notes
+- Python 3.10–3.13, an `OPENAI_API_KEY`, and **internet access** (the YouTube channel is fetched and indexed when `tools.py` is imported, so the first start takes a moment).
+- Video listing uses `pytube`; if YouTube changes its pages it can temporarily break — upgrade it (`pip install -U pytube`) or switch `YOUTUBE_CHANNEL_HANDLE` to another channel.
+- `tools.py` registers the full channel URL itself because current `crewai-tools` releases reject a bare `@handle`.
+
 ## Learning goals
 Agent roles/backstories, task context passing, tools, sequential process, memory and caching.
